@@ -107,6 +107,9 @@ class FormApplication
   TEMPLATE_DIR          = './templates'
   LANGUAGE_REF_DIR      = 'references'
 
+  # Taxonomy file from which JS is generated
+  TAXONOMY_FILE         = './js-data/usas.clean.yml'
+
   # Where to put output files
   OUTPUT_DIR            = './output'
 
@@ -128,7 +131,7 @@ class FormApplication
 
   # Initialise with a lexicon directory
   def initialize(lexicon_dir = nil)
-    @tagparser        = USASTools::SemTag::Parser.new(true)
+    @tagparser        = USASTools::SemTag::Parser.new(USASTools::SemTag::Taxonomy.new(TAXONOMY_FILE))
     @lexicons         = load_lexicons(lexicon_dir) if lexicon_dir
     @valid_languages  = Dir.glob(File.join(TEMPLATE_DIR, LANGUAGE_REF_DIR, '*.erb')).map{ |x| File.basename(x).gsub(/\.erb$/, '') }
   end
